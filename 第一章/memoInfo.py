@@ -1,7 +1,6 @@
 import psutil
 class MemoInfo:
-
-	def bytes2human(self,n):
+	def bytes2human(self, n):
 		symbols = ('K','M','G','T','P','E','Z','Y')
 		prefix = {}
 		for index,symbol in enumerate(symbols):
