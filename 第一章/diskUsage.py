@@ -9,7 +9,7 @@ class DiskUsage:
         symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
         prefix = {}
         for index, symbol in enumerate(symbols):
-            prefix[symbol] = 1 << (index+1)*10
+            prefix[symbol] = 1 << (index + 1) * 10
         for symbol in reversed(symbols):
             if n > prefix[symbol]:
                 value = float(n) / prefix[symbol]
@@ -19,7 +19,7 @@ class DiskUsage:
     def main(self):
         templ = "%-17s %8s %8s %8s %5s%% %9s %s"
         print(templ % ("Device", "Total", "Used", "Free",
-            "Use", "Type", "Mount"))
+                       "Use", "Type", "Mount"))
         for part in psutil.disk_partitions(all=False):
             if os.name == 'nt':
                 if 'cdrom' in part.opts or part.fstype == '':
@@ -33,6 +33,6 @@ class DiskUsage:
                 int(usage.percent),
                 part.fstype,
                 part.mountpoint
-                ))
+            ))
 if __name__ == '__main__':
     DiskUsage().main()
