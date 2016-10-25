@@ -1,3 +1,4 @@
+import psutil
 import atexit
 import time
 import sys
@@ -36,17 +37,15 @@ def print_line(line, highlight=False):
 
 
 def bytes2human(n):
-    symbols = {'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'}
+    symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
     prefix = {}
     for index, symbol in enumerate(symbols):
-        prefix[symbol] = 1 << (i + 1) * 10
+        prefix[symbol] = 1 << (index + 1) * 10
     for symbol in reversed(symbols):
         if n >= prefix[symbol]:
             value = float(n) / prefix[symbol]
             return '%.2f %s' % (value, symbol)
     return '%.2f B' % (n)
-
-
 def poll(interval):
     tot_before = psutil.net_io_counters()
     pnic_before = psutil.net_io_counters(pernic=True)
@@ -58,20 +57,22 @@ def poll(interval):
 
 def refresh_window(tot_before, tot_after, pnic_before, pnic_after):
     global lineno
-    print_line("total bytes:    sent: %-10s  received: %s" %
+    print_line("total bytes:       sent: %-10s  received: %s" %
                (bytes2human(tot_after.bytes_sent), bytes2human(tot_after.bytes_recv)))
-    print_line("total packages   sent: %-10s received: %s" %
-               (bytes2human(tot_after.packets_sent), bytes2human(tot_after.packets_recv)))
+    print_line("total packages     sent: %-10s received: %s" %
+               (tot_after.packets_sent, tot_after.packets_recv))
     print_line("")
     nic_names = list(pnic_after.keys())
-    nic_names.sort(key=lambda x: sum(pnic_after[x], reverse=True))
+    nic_names.sort(key=lambda x: sum(pnic_after[x]), reverse=True)
     for name in nic_names:
         stats_before = pnic_before[name]
         stats_after = pnic_after[name]
         templ = "%-15s %15s %15s"
         print_line(templ % (name, "TOTAL", "PRE-SEC"), highlight=True)
-        print_line(templ % ("bytes-sent", bytes2human(stats_after.bytes_sent),
+        print_line(templ % ("bytes-sent",
+                            bytes2human(stats_after.bytes_sent),
                             bytes2human(stats_after.bytes_sent - stats_before.bytes_sent) + '/s',))
+
         print_line(templ % ("bytes-recv", bytes2human(stats_after.bytes_recv),
                             bytes2human(stats_after.bytes_recv - stats_before.bytes_recv) + '/s',))
         print_line(templ % ("pkts-sent", stats_after.packets_sent,
@@ -79,8 +80,8 @@ def refresh_window(tot_before, tot_after, pnic_before, pnic_after):
         print_line(templ % ("pkts-recv", stats_after.packets_recv,
                             stats_after.packets_recv - stats_before.packets_recv))
         print_line("")
-        win.refresh()
-        lineno = 0
+    win.refresh()
+    lineno = 0
 
 
 def main():
