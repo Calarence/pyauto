@@ -16,10 +16,10 @@ def bytes2human(n):
 def print_info():
     for pid in psutil.pids():
         process = psutil.Process(pid)
-        USS = bytes2human(process.memory_info()[7])
-        PSS = bytes2human(process.memory_info()[8])
-        Swap = bytes2human(process.memory_info()[9])
-        RSS = bytes2human(process.memory_info()[0])
+        USS = bytes2human(process.memory_full_info()[7])
+        PSS = bytes2human(process.memory_full_info()[8])
+        Swap = bytes2human(process.memory_full_info()[9])
+        RSS = bytes2human(process.memory_full_info()[0])
         print("%s %s %s %s %s %s %s" % (str(pid), process.name(),
                                         process.cmdline(), USS, PSS, Swap, RSS))
 if __name__ == '__main__':
