@@ -1,1 +1,3 @@
- ☐ swap了解 
+ ■ list process pid user cmdline
+ ■ list process some information:USS PSS Swap RSS
+ ■ python string format
