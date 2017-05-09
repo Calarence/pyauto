@@ -1,3 +1,8 @@
- ■ list process pid user cmdline
- ■ list process some information:USS PSS Swap RSS
- ■ python string format
+ √ list process pid user cmdline @done (16-10-28 16:01)
+ √ list process some information:USS PSS Swap RSS @done (16-10-28 16:01)
+ √ python string format @done (16-10-28 16:01)
+ √ system support check, if not support, exit @done (16-10-28 16:05)
+ √ add exception catch for process which is nosuchprocess or AccessDenied @done (16-10-28 16:17)
+ √ Refactor the way to visit data and attributes, like as_dict and getattr @done (16-10-28 19:47)
+ √ string format for outputing @done (16-10-28 19:47)
+ ■ lambda expression
